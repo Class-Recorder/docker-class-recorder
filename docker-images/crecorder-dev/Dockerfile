@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM cruizba/crecorder-base
 
 # Create user for development
 RUN useradd -ms /bin/bash userdocker
@@ -17,23 +17,6 @@ ENV ANDROID_SDK_URL="https://dl.google.com/android/repository/tools_r25.2.5-linu
 
 #Path
 ENV PATH $PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/$ANDROID_BUILD_TOOLS_VERSION
-
-###### Basic stuff
-RUN apt-get update \ 
-    && apt-get install -y software-properties-common \
-    curl gnupg ant gradle wget build-essential git \
-    && rm -rf /var/lib/apt/lists/*
-
-####### Ffmpeg
-RUN apt-get update \ 
-    && apt-get install -y --no-install-recommends ffmpeg libxrender1 libxtst6 \
-	libxi6 pulseaudio socat alsa-utils \
-    && rm -rf /var/lib/apt/lists/*
-
-####### Jdk 8
-RUN apt-get update \ 
-    && apt-get install -y openjdk-8-jdk \
-    && rm -rf /var/lib/apt/lists/*
 
 ####### Maven
 RUN apt-get update \ 
@@ -95,6 +78,12 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 ENV PATH $JAVA_HOME/bin:$PATH
 ENV DEV_DIR /home/userdocker/class-recorder
 
+# Copying entry point
+ADD entrypoint.sh /tmp/entrypoint.sh
+RUN chmod u+x /tmp/entrypoint.sh && chown userdocker /tmp/entrypoint.sh
+
+RUN chown -R userdocker /home/userdocker
+
 # Change to user docker
 USER userdocker
 
@@ -102,8 +91,11 @@ USER userdocker
 RUN code --extensions-dir $VSCODEEXT \ 
     --install-extension vscjava.vscode-java-pack \
     --install-extension vscjava.vscode-maven \
-    --install-extension eg2.tslint
+    --install-extension eg2.tslint \
+    --install-extension vscjava.vscode-java-pack \
+    --install-extension formulahendry.terminal
 
-WORKDIR /home/userdocker
+WORKDIR /home/userdocker/class-recorder
 
-ENTRYPOINT [ "/bin/bash" ]
+ENTRYPOINT [ "/tmp/entrypoint.sh" ]
+CMD [ "/bin/bash" ]
