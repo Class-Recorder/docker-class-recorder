@@ -1,0 +1,39 @@
+version: "2.1"
+services:
+  teacher-pc-server: 
+    user: $CURRENT_UID
+    image: cruizba/crecorder-ci
+    privileged: true
+    network_mode: "host"
+    environment:
+      - DISPLAY=$DISPLAY
+      - PULSE_SERVER=unix:$XDG_RUNTIME_DIR/pulse/native
+      - TRAVIS_BRANCH=$TRAVIS_BRANCH
+    volumes:
+      - $PWD/class-recorder:/home/userdocker
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - $XDG_RUNTIME_DIR/pulse/native:$XDG_RUNTIME_DIR/pulse/native
+      - ~/.config/pulse/cookie:/root/.config/pulse/cookie
+      - /dev/bus/usb:/dev/bus/usb
+    group_add:
+      - $AUDIO_GROUP_CR
+    devices:
+      - /dev/snd
+    depends_on:
+      mysql-server:
+        condition: service_healthy
+  mysql-server:
+    image: mysql:8.0.11
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_DATABASE=class-recorder
+      - MYSQL_ROOT_PASSWORD=1234
+    volumes:
+      - $PWD/mysql:/var/lib/mysql
+    healthcheck:
+      test: "mysql --user=root --password=1234 --execute \"SHOW DATABASES;\""
+      timeout: 20s
+      retries: 10
+
+

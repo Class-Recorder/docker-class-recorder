@@ -12,11 +12,12 @@ RUN apt-get update \
 	libxi6 pulseaudio socat alsa-utils \
     && rm -rf /var/lib/apt/lists/*
 
-####### Jdk 8
-RUN apt-get update \ 
-    && apt-get install -y openjdk-8-jdk \
-    && rm -rf /var/lib/apt/lists/*
+ENV OPENJDK_8_AZUL=https://cdn.azul.com/zulu/bin/zulu8.33.0.1-jdk8.0.192-linux_x64.tar.gz
 
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+RUN wget $OPENJDK_8_AZUL -O /tmp/openjdk_8_azul.tar.gz \
+    && tar xfvz /tmp/openjdk_8_azul.tar.gz --directory /usr/lib/jvm \
+    && rm -f /tmp/oopenjdk_8_azul.tar.gz
+
+ENV JAVA_HOME /usr/lib/jvm/zulu8.33.0.1-jdk8.0.192-linux_x64
 ENV PATH $JAVA_HOME/bin:$PATH
 ENV APP_DIR /app

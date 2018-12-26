@@ -52,44 +52,11 @@ RUN dpkg --add-architecture i386 && \
 # Grants for user in Android
 RUN chown -R userdocker $ANDROID_HOME
 
-# Add the vscode debian repo
-RUN curl -sSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | apt-key add -
-RUN echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
-
-# install vscode and dependencies
-RUN apt-get update && apt-get -y install \
-	code libasound2 libatk1.0-0 libcairo2 libcups2 \
-	libexpat1 libfontconfig1 libfreetype6 libgtk2.0-0 \
-	libpango-1.0-0 libx11-xcb1 libxcomposite1 \
-	libxcursor1 libxdamage1 libxext6 \
-	libxfixes3 libxi6 libxrandr2 \
-	libxrender1 libxss1 libxtst6 \
-	--no-install-recommends \
-	&& rm -rf /var/lib/apt/lists/*
-
-# wget IntelliJ IDEA 
-ENV INTELLIJ_URL=https://download-cf.jetbrains.com/idea/ideaIC-2018.3.2.tar.gz
-RUN wget --progress=bar:force $INTELLIJ_URL -O /tmp/intellij.tar.gz \
-&& mkdir /opt/intellij \
-&& tar -xzf /tmp/intellij.tar.gz -C /opt/intellij --strip-components=1 \
-&& rm -rf /tmp/*
-
-RUN ln -s /opt/intellij/bin/idea.sh /bin/idea
-
 # Install Chrome
 RUN curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
     && apt-get update && apt-get install -y google-chrome-stable \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Firefox
-RUN apt-get update && apt-get install firefox -y \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# package vscode with extensions for development
-ENV VSCODEEXT /var/vscode-ext
-RUN mkdir $VSCODEEXT \
-    && chown -R userdocker $VSCODEEXT
 
 # Copying entry point
 ADD entrypoint.sh /tmp/entrypoint.sh
@@ -99,14 +66,6 @@ RUN chown -R userdocker /home/userdocker
 
 # Change to user docker
 USER userdocker
-
-# Install vscode extensions
-RUN code --extensions-dir $VSCODEEXT \ 
-    --install-extension vscjava.vscode-java-pack \
-    --install-extension vscjava.vscode-maven \
-    --install-extension eg2.tslint \
-    --install-extension vscjava.vscode-java-pack \
-    --install-extension formulahendry.terminal
 
 WORKDIR /home/userdocker/class-recorder
 
