@@ -1,7 +1,6 @@
 version: "2.1"
 services:
   teacher-pc-server: 
-    user: $CURRENT_UID
     image: cruizba/crecorder-ci
     privileged: true
     network_mode: "host"
@@ -10,7 +9,7 @@ services:
       - PULSE_SERVER=unix:$XDG_RUNTIME_DIR/pulse/native
       - TRAVIS_BRANCH=$TRAVIS_BRANCH
     volumes:
-      - $PWD/class-recorder:/home/travis
+      - $PWD/class-recorder:/class-recorder
       - /tmp/.X11-unix:/tmp/.X11-unix
       - $XDG_RUNTIME_DIR/pulse/native:$XDG_RUNTIME_DIR/pulse/native
       - ~/.config/pulse/cookie:/root/.config/pulse/cookie

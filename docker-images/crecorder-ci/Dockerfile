@@ -1,11 +1,5 @@
 FROM cruizba/crecorder-base
 
-RUN apt-get update && \
-      apt-get -y install sudo
-
-# Create user for development
-RUN useradd -ms /bin/bash travis
-
 # Versions
 ENV NODE_VERSION=11.0.0 \
     NPM_VERSION=6.4.1 \
@@ -52,9 +46,6 @@ RUN dpkg --add-architecture i386 && \
     apt-get autoremove -y && \
     apt-get clean
 
-# Grants for user in Android
-RUN chown -R travis $ANDROID_HOME
-
 # Install Chrome
 RUN curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
@@ -63,14 +54,9 @@ RUN curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
 
 # Copying entry point
 ADD entrypoint.sh /tmp/entrypoint.sh
-RUN chmod u+x /tmp/entrypoint.sh && chown travis /tmp/entrypoint.sh
+RUN chmod u+x /tmp/entrypoint.sh
 
-RUN chown -R travis /home/travis
-
-# Change to user docker
-USER travis
-
-WORKDIR /home/travis/class-recorder
+WORKDIR /class-recorder
 
 ENTRYPOINT [ "/tmp/entrypoint.sh" ]
 CMD [ "/bin/bash" ]
