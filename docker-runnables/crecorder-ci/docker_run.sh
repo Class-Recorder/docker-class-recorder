@@ -9,8 +9,7 @@ mkdir -p class-recorder/class-recorder
 docker-compose up -d
 sleep 20
 
-docker exec -it $(docker container ls -q -l) bash -c "export HOME=/home/travis/build/Class-Recorder/class-recorder"
-docker exec -it $(docker container ls -q -l) bash -c "echo $HOME"
+docker exec -it $(docker container ls -q -l) bash -c "export HOME=/home/travis/build/Class-Recorder/class-recorder && echo $HOME"
 
 echo "Cloning repository"
 docker exec -it $(docker container ls -q -l) bash -c "git clone -b $TRAVIS_BRANCH https://github.com/Class-Recorder/class-recorder"
