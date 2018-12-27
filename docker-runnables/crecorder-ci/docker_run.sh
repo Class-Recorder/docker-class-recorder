@@ -11,6 +11,8 @@ sleep 20
 
 echo "$HOME"
 docker exec -it $(docker container ls -q -l) bash -c "echo $HOME"
+echo $CURRENT_UID
+docker exec -it $(docker container ls -q -l) bash -c "echo $(id -u):$(id -g)"
 
 echo "Cloning repository"
 docker exec -it $(docker container ls -q -l) bash -c "git clone -b $TRAVIS_BRANCH https://github.com/Class-Recorder/class-recorder"
