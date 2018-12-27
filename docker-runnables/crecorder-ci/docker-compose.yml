@@ -19,21 +19,5 @@ services:
       - $AUDIO_GROUP_CR
     devices:
       - /dev/snd
-    depends_on:
-      mysql-server:
-        condition: service_healthy
-  mysql-server:
-    image: mysql:8.0.11
-    ports:
-      - 3306:3306
-    environment:
-      - MYSQL_DATABASE=class-recorder
-      - MYSQL_ROOT_PASSWORD=1234
-    volumes:
-      - $PWD/mysql:/var/lib/mysql
-    healthcheck:
-      test: "mysql --user=root --password=1234 --execute \"SHOW DATABASES;\""
-      timeout: 20s
-      retries: 10
 
 
