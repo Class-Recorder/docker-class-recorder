@@ -14,7 +14,7 @@ RUN apt-get update \
 
 ENV OPENJDK_8_AZUL=https://cdn.azul.com/zulu/bin/zulu8.33.0.1-jdk8.0.192-linux_x64.tar.gz
 
-RUN wget $OPENJDK_8_AZUL -O /tmp/openjdk_8_azul.tar.gz \
+RUN wget -q $OPENJDK_8_AZUL -O /tmp/openjdk_8_azul.tar.gz \
     && tar xfvz /tmp/openjdk_8_azul.tar.gz --directory /usr/lib/jvm \
     && rm -f /tmp/oopenjdk_8_azul.tar.gz
 

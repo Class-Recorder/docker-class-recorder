@@ -1,7 +1,10 @@
 FROM cruizba/crecorder-base
 
+RUN apt-get update && \
+      apt-get -y install sudo
+
 # Create user for development
-RUN useradd -ms /bin/bash userdocker
+RUN useradd -ms /bin/bash userdocker && echo "userdocker:userdocker" | chpasswd && adduser userdocker sudo
 
 # Versions
 ENV NODE_VERSION=11.0.0 \
@@ -39,7 +42,7 @@ RUN dpkg --add-architecture i386 && \
     apt-get install -y libncurses5:i386 libstdc++6:i386 zlib1g:i386 && \
     # Installs Android SDK
     mkdir android && cd android && \
-    wget -O tools.zip ${ANDROID_SDK_URL} && \
+    wget -q -O tools.zip ${ANDROID_SDK_URL} && \
     unzip tools.zip && rm tools.zip && \
     echo y | android update sdk -a -u -t platform-tools,${ANDROID_APIS},build-tools-${ANDROID_BUILD_TOOLS_VERSION} && \
     chmod a+x -R $ANDROID_HOME && \
