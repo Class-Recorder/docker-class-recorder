@@ -20,4 +20,3 @@ RUN wget -q $OPENJDK_8_AZUL -O /tmp/openjdk_8_azul.tar.gz \
 
 ENV JAVA_HOME /usr/lib/jvm/zulu8.33.0.1-jdk8.0.192-linux_x64
 ENV PATH $JAVA_HOME/bin:$PATH
-ENV APP_DIR /app
