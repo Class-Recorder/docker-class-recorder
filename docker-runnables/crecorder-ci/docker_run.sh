@@ -38,5 +38,5 @@ docker push cruizba/crecorder-pc-prod
 # Copy release folder in workdir
 cd $WORKDIR
 cp -R $RELEASE_DIR $WORKDIR
-
+ls -l $WORKDIR/release
 
