@@ -34,11 +34,6 @@ cd $WORKDIR
 cd ../../docker-images/crecorder-pc-prod/
 cp $RELEASE_DIR/class-recorder-pc.jar .
 
-# Docker login and push of crecorder-pc-prod
-echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-docker build . -t cruizba/crecorder-pc-prod
-docker push cruizba/crecorder-pc-prod
-
 # Copy release folder in workdir
 cd $WORKDIR
 cp -R $RELEASE_DIR $WORKDIR
