@@ -16,6 +16,7 @@ services:
       - $HOME/.Xauthority:$HOME/.Xauthority
       - $PWD/config:/app/config
       - $PWD/videos:/app/videos
+      - $PWD/temp:/app/temp
     group_add:
       - $AUDIO_GROUP_CR
     devices:
