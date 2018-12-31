@@ -30,7 +30,7 @@ ls -l ../crecorder-pc-prod-h2
 cd ..
 
 #Adapting docker-compose to specified tag for production docker-images
-sudo add-apt-repository ppa:rmescandon/yq 
+sudo add-apt-repository ppa:rmescandon/yq -y
 sudo apt update
 sudo apt install yq -y # Install yq to modify docker-compose.yml
 yq write --inplace  crecorder-pc-prod-h2/docker-compose.yml services.teacher-pc-server.image cruizba/crecorder-pc-prod:$TRAVIS_TAG
