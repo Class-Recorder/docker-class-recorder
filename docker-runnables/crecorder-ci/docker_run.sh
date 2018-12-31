@@ -25,16 +25,14 @@ docker exec -it $(docker container ls -q -l) bash -c "cd class-recorder && npm r
 mkdir $RELEASE_DIR
 cp class-recorder/class-recorder/build-binaries/class-recorder-pc.jar $RELEASE_DIR
 cp class-recorder/class-recorder/build-binaries/class-recorder.apk $RELEASE_DIR
-ls -l ../crecorder-pc-prod-mysql
-ls -l ../crecorder-pc-prod-h2
 cd ..
 
 #Adapting docker-compose to specified tag for production docker-images
-sudo add-apt-repository ppa:rmescandon/yq -y
-sudo apt update
-sudo apt install yq -y # Install yq to modify docker-compose.yml
-yq write --inplace  crecorder-pc-prod-h2/docker-compose.yml services.teacher-pc-server.image cruizba/crecorder-pc-prod:$TRAVIS_TAG
-yq write --inplace  crecorder-pc-prod-mysql/docker-compose.yml services.teacher-pc-server.image cruizba/crecorder-pc-prod:$TRAVIS_TAG
+#Using yq to edit docker-compose yml files
+docker run -v ${PWD}:/workdir mikefarah/yq yq write --inplace  crecorder-pc-prod-h2/docker-compose.yml services.teacher-pc-server.image cruizba/crecorder-pc-prod:$TRAVIS_TAG
+docker run -v ${PWD}:/workdir mikefarah/yq yq write --inplace  crecorder-pc-prod-mysql/docker-compose.yml services.teacher-pc-server.image cruizba/crecorder-pc-prod:$TRAVIS_TAG
+cat crecorder-pc-prod-h2/docker-compose.yml
+cat crecorder-pc-prod-mysql/docker-compose.yml
 
 # Zipping docker runnables for releases
 zip -r $RELEASE_DIR/Docker-crecorder-pc-prod-mysql.zip crecorder-pc-prod-mysql
