@@ -17,6 +17,7 @@ services:
       - $PWD/config:/app/config
       - $PWD/videos:/app/videos
       - $PWD/temp:/app/temp
+      - $PWD/.credentials:app/.credentials
     group_add:
       - $AUDIO_GROUP_CR
     devices:
