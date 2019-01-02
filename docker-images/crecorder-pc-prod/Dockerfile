@@ -3,11 +3,9 @@ FROM cruizba/crecorder-base
 # Create user
 RUN useradd -ms /bin/bash userdocker
 
-ENV APP_DIR /app
+ENV APP_DIR home/userdocker/app
 
-RUN chown -R userdocker /home/userdocker  \
-    && mkdir /app \
-    && chown -R userdocker /app
+RUN chown -R userdocker /home/userdocker
 
 # Change user to userdocker
 USER userdocker

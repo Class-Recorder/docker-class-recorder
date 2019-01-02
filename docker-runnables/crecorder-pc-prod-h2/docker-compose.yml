@@ -6,7 +6,6 @@ services:
     privileged: true
     network_mode: host
     environment:
-    - HOME=$HOME
     - DISPLAY=$DISPLAY
     - PULSE_SERVER=unix:$XDG_RUNTIME_DIR/pulse/native
     volumes:
