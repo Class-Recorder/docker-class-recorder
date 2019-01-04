@@ -11,10 +11,6 @@ RUN chown -R userdocker /home/userdocker
 
 COPY class-recorder-pc.jar $APP_DIR
 
-# Firefox	
-RUN apt-get update && apt-get install firefox -y \	
-    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
 # Change user to userdocker
 USER userdocker
 
