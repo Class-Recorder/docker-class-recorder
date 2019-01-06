@@ -12,9 +12,9 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - $XDG_RUNTIME_DIR/pulse/native:$XDG_RUNTIME_DIR/pulse/native
       - ~/.config/pulse/cookie:/root/.config/pulse/cookie
-      - $PWD/config:$HOME/app/config
-      - $PWD/videos:$HOME/app/videos
-      - $PWD/temp:$HOME/app/temp
+      - $PWD/config:/home/userdocker/app/config
+      - $PWD/videos:/home/userdocker/app/videos
+      - $PWD/temp:/home/userdocker/app/temp
     group_add:
       - $AUDIO_GROUP_CR
     devices:
