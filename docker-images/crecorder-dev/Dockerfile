@@ -107,6 +107,8 @@ RUN code --extensions-dir $VSCODEEXT \
     --install-extension eg2.tslint \
     --install-extension vscjava.vscode-java-pack \
     --install-extension formulahendry.terminal
+    
+ENV JAVA_HOME /usr/lib/jvm/zulu8.33.0.1-jdk8.0.192-linux_x64
 
 WORKDIR /home/userdocker/class-recorder
 
