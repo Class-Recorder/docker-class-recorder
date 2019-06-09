@@ -3,7 +3,7 @@
 RELEASE_DIR="/tmp/release"
 WORKDIR=$(pwd)
 
-xhost local: 
+xhost local:
 echo "Opened xhost to local connections"
 export AUDIO_GROUP_CR=$(getent group audio | cut -d: -f3)
 echo "Created AUDIO_GROUP_CR environment variable to ${AUDIO_GROUP_CR}"
@@ -11,13 +11,19 @@ docker-compose up -d
 sleep 20
 
 echo "Cloning repository"
-docker exec -it $(docker container ls -q -l) bash -c "git clone -b $TRAVIS_BRANCH https://github.com/Class-Recorder/class-recorder"
+docker exec -it crecorder-server bash -c "git clone -b $TRAVIS_BRANCH https://github.com/Class-Recorder/class-recorder"
 echo "Installing dependencies"
-docker exec -it $(docker container ls -q -l) bash -c "cd class-recorder && npm install && npm run install-dependencies && npm run install-dependencies-cordova"
+docker exec -it crecorder-server bash -c "cd class-recorder && npm install && npm run install-dependencies && npm run install-dependencies-cordova"
+echo "Start server"
+docker exec -d crecorder-server bash -c "cd class-recorder && npm run dev:start-pc-server"
+while ! nc -z localhost 8000 ; do
+    echo "Waiting spring app to run"
+    sleep 10
+done
 echo "Executing test"
-docker exec -it $(docker container ls -q -l) bash -c "cd class-recorder && npm run test-pc-server && npm run test-pc-frontend"
+docker exec -it crecorder-server bash -c "cd class-recorder && npm run test-pc-server && npm run test-pc-frontend"
 echo "Building release"
-docker exec -it $(docker container ls -q -l) bash -c "cd class-recorder && npm run build"
+docker exec -it crecorder-server bash -c "cd class-recorder && npm run build"
 
 # Creating release
 mkdir $RELEASE_DIR
