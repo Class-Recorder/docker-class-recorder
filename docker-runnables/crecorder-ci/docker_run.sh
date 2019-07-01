@@ -23,7 +23,8 @@ while ! nc -z localhost 8000 ; do
     sleep 10
 done
 echo "Executing test"
-docker exec -it crecorder-server bash -c "cd class-recorder && npm run test-pc-server && npm run test-pc-frontend && cat spring-logs.txt"
+docker exec -it crecorder-server bash -c "cd class-recorder && npm run test-pc-server && npm run test-pc-frontend"
+docker exec -it crecorder-server bash -c "cd class-recorder && cat spring-logs.txt"
 echo "Building release"
 docker exec -it crecorder-server bash -c "cd class-recorder && npm run build"
 
