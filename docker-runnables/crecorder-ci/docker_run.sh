@@ -7,6 +7,7 @@ WORKDIR=$(pwd)
 xhost local:
 echo "Opened xhost to local connections"
 export AUDIO_GROUP_CR=$(getent group audio | cut -d: -f3)
+export AUDIODEV=null
 echo "Created AUDIO_GROUP_CR environment variable to ${AUDIO_GROUP_CR}"
 docker-compose up -d # Run infrastructure
 sleep 20
@@ -16,7 +17,7 @@ docker exec -it crecorder-server bash -c "git clone -b $TRAVIS_BRANCH https://gi
 echo "Installing dependencies"
 docker exec -it crecorder-server bash -c "cd class-recorder && npm install && npm run install-dependencies && npm run install-dependencies-cordova"
 echo "Start server"
-docker exec -d crecorder-server bash -c "cd class-recorder && npm run dev:start-pc-server"
+docker exec -d crecorder-server bash -c "cd class-recorder && npm run dev:start-pc-server > spring-logs.txt"
 while ! nc -z localhost 8000 ; do
     echo "Waiting spring app to run"
     sleep 10

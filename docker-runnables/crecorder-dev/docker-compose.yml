@@ -5,6 +5,8 @@ services:
     image: cruizba/crecorder-dev
     privileged: true
     network_mode: "host"
+    ports:
+      - 8000:8000
     environment:
       - DISPLAY=$DISPLAY
       - PULSE_SERVER=unix:$XDG_RUNTIME_DIR/pulse/native
