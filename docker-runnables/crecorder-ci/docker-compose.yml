@@ -4,6 +4,8 @@ services:
     image: cruizba/crecorder-ci
     privileged: true
     network_mode: "host"
+    ports:
+      - 8000:8000
     container_name: crecorder-server
     environment:
       - DISPLAY=$DISPLAY
